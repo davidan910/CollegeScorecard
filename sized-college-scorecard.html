@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIZED College Decision Scorecard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f4f3ef;
+    --border: #e8e6e0;
+    --border2: #d4d1c8;
+    --text: #1a1917;
+    --text2: #6b6860;
+    --text3: #9e9c96;
+    --green: #0F6E56;
+    --green-bg: #e1f5ee;
+    --accent: #2d5be3;
+    --accent-bg: #eef1fd;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  /* Header */
+  .page-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 40px 24px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .page-header .eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-bg);
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+  .page-header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 30px;
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .page-header p {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.6;
+    max-width: 560px;
+  }
+
+  /* Layout */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 32px 40px;
+  }
+
+  /* Section */
+  .section { margin-bottom: 36px; }
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 12px;
+  }
+
+  /* MCDA explainer */
+  .explainer {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+  }
+  .explainer .intro {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.65;
+    margin-bottom: 16px;
+  }
+  .steps-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .step-card {
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+  }
+  .step-card .step-num {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .step-card .step-text {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.55;
+  }
+
+  /* School inputs */
+  .school-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .school-grid label {
+    font-size: 12px;
+    color: var(--text2);
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .school-grid input {
+    width: 100%;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    padding: 9px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border2);
+    background: var(--surface);
+    color: var(--text);
+    outline: none;
+    transition: border-color .15s;
+  }
+  .school-grid input:focus { border-color: var(--accent); }
+
+  /* Table */
+  .tbl-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  thead { background: var(--surface2); }
+  th {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--text3);
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  th.c { text-align: center; }
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+    color: var(--text);
+  }
+  tr:last-child td { border-bottom: none; }
+  .crit-name { font-size: 13px; font-weight: 500; }
+  .crit-hint { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+  select {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    padding: 5px 8px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border2);
+    background: var(--surface);
+    color: var(--text);
+    width: 100%;
+    cursor: pointer;
+    outline: none;
+  }
+  .grade-wrap { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .grade-wrap input[type=range] {
+    width: 100%;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  .grade-num {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    min-width: 16px;
+    text-align: center;
+  }
+  .wscore { font-size: 12px; color: var(--text3); text-align: center; }
+
+  /* Footer row */
+  .foot-row td {
+    background: #f0f4ff;
+    border-top: 2px solid var(--border2);
+    font-weight: 500;
+  }
+  .total-val {
+    font-size: 22px;
+    font-weight: 500;
+    text-align: center;
+    color: var(--text2);
+  }
+  .total-val.winner { color: var(--green); }
+  .winner-badge {
+    display: block;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-top: 2px;
+  }
+
+  /* Del button */
+  .del-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--text3);
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    line-height: 1;
+    transition: background .12s, color .12s;
+  }
+  .del-btn:hover { background: #fdecea; color: #c0392b; }
+
+  /* Add criterion */
+  .add-row {
+    margin-top: 12px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .add-row input[type=text] {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border2);
+    background: var(--surface);
+    color: var(--text);
+    outline: none;
+    flex: 1;
+    min-width: 150px;
+    transition: border-color .15s;
+  }
+  .add-row input:focus { border-color: var(--accent); }
+  .add-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 18px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--accent);
+    background: var(--accent-bg);
+    color: var(--accent);
+    cursor: pointer;
+    transition: background .12s;
+    white-space: nowrap;
+  }
+  .add-btn:hover { background: #dde4fb; }
+
+  /* Divider */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 36px 0;
+  }
+
+  /* Premortem */
+  .pm-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+  }
+  .pm-card .pm-intro {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .pm-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .pm-grid label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text2);
+    display: block;
+    margin-bottom: 5px;
+  }
+  .pm-grid textarea {
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    font-size: 13px;
+    padding: 8px 10px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border2);
+    background: var(--bg);
+    color: var(--text);
+    resize: vertical;
+    min-height: 80px;
+    line-height: 1.5;
+    outline: none;
+    transition: border-color .15s;
+  }
+  .pm-grid textarea:focus { border-color: var(--accent); }
+
+  .door-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .door-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+  }
+  .door-card .dlabel {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text3);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+
+  /* Footer */
+  .page-footer {
+    text-align: center;
+    margin-top: 48px;
+    font-size: 12px;
+    color: var(--text3);
+  }
+  .page-footer a { color: var(--accent); text-decoration: none; }
+
+  @media (max-width: 600px) {
+    .container, .page-header { padding: 20px 16px; }
+    .steps-row, .school-grid, .pm-grid, .door-grid { grid-template-columns: 1fr; }
+    table { font-size: 12px; }
+    th, td { padding: 8px 6px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="eyebrow">SIZED Framework · Step 4 of 5</div>
+  <h1>College Decision Scorecard</h1>
+  <p>A Multi-Criteria Decision Analysis (MCDA) tool to help you evaluate your college options objectively — by weighing what actually matters to you.</p>
+</div>
+
+<div class="container">
+
+  <!-- MCDA Explainer -->
+  <div class="section">
+    <div class="section-label">What is MCDA?</div>
+    <div class="explainer">
+      <p class="intro">The MCDA scorecard helps you cut through gut feelings and cognitive bias by putting real numbers to your values. Instead of going back and forth in your head, you score each school systematically and let the composite score surface what your gut already knows — or challenge what you assumed.</p>
+      <div class="steps-row">
+        <div class="step-card">
+          <div class="step-num">Step 1 — List</div>
+          <div class="step-text">List every criterion that matters to you: cost, strength of program, opportunity, living situation, or whatever your top values are.</div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">Step 2 — Weight</div>
+          <div class="step-text">Assign each criterion a weight — Low, Medium, or High — based on how much it personally matters to you right now.</div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">Step 3 — Grade & Score</div>
+          <div class="step-text">Score each school 1–5 per criterion. The tool multiplies score × weight and adds it all up into a composite score for each school.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- School Names -->
+  <div class="section">
+    <div class="section-label">Your schools</div>
+    <div class="school-grid">
+      <div><label>School A</label><input type="text" id="s0" placeholder="e.g. UC San Diego" oninput="updateNames()"></div>
+      <div><label>School B</label><input type="text" id="s1" placeholder="e.g. Cal Poly SLO" oninput="updateNames()"></div>
+      <div><label>School C</label><input type="text" id="s2" placeholder="e.g. Arizona State" oninput="updateNames()"></div>
+    </div>
+  </div>
+
+  <!-- Scorecard -->
+  <div class="section">
+    <div class="section-label">Scorecard — grade each school 1 (poor) to 5 (excellent)</div>
+    <div class="tbl-wrap">
+      <table id="scorecard">
+        <thead>
+          <tr>
+            <th style="width:185px;">Criterion</th>
+            <th style="width:96px;" class="c">Weight</th>
+            <th style="width:115px;" class="c" id="h0">School A</th>
+            <th style="width:115px;" class="c" id="h1">School B</th>
+            <th style="width:115px;" class="c" id="h2">School C</th>
+            <th style="width:38px;"></th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+        <tfoot>
+          <tr class="foot-row">
+            <td colspan="2" style="font-size:13px;color:#6b6860;">Composite score (weighted avg.)</td>
+            <td class="total-val" id="t0">—</td>
+            <td class="total-val" id="t1">—</td>
+            <td class="total-val" id="t2">—</td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div class="add-row">
+      <input type="text" id="new-crit" placeholder="Add a criterion (e.g. Housing options)">
+      <input type="text" id="new-hint" placeholder="Short description (optional)" style="flex:1.5;">
+      <button class="add-btn" onclick="addCriterion()">+ Add criterion</button>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Premortem + Door Type -->
+  <div class="section">
+    <div class="section-label">D · Premortem &amp; door type</div>
+    <div class="pm-card">
+      <p class="pm-intro">Before you decide: imagine it's 4–5 years in the future and this choice didn't work out. What went wrong? Writing this out forces you to surface hidden risks and think about backup plans — while you still have time to act on them.</p>
+      <div class="pm-grid">
+        <div><label id="pl0">School A — what could go wrong?</label><textarea id="pm0" placeholder="e.g. debt became unmanageable, career outcomes were weak, transferred out…"></textarea></div>
+        <div><label id="pl1">School B — what could go wrong?</label><textarea id="pm1" placeholder="e.g. major didn't fit, campus felt isolating, far from support system…"></textarea></div>
+        <div><label id="pl2">School C — what could go wrong?</label><textarea id="pm2" placeholder="e.g. program wasn't competitive, couldn't afford it after year 1…"></textarea></div>
+      </div>
+      <div class="door-grid">
+        <div class="door-card">
+          <div class="dlabel" id="dl0">I · Door type — School A</div>
+          <select id="d0"><option value="">Select…</option><option>Two-way door (reversible — transfer, gap year)</option><option>One-way door (hard to reverse — e.g. heavy loans)</option></select>
+        </div>
+        <div class="door-card">
+          <div class="dlabel" id="dl1">I · Door type — School B</div>
+          <select id="d1"><option value="">Select…</option><option>Two-way door (reversible — transfer, gap year)</option><option>One-way door (hard to reverse — e.g. heavy loans)</option></select>
+        </div>
+        <div class="door-card">
+          <div class="dlabel" id="dl2">I · Door type — School C</div>
+          <select id="d2"><option value="">Select…</option><option>Two-way door (reversible — transfer, gap year)</option><option>One-way door (hard to reverse — e.g. heavy loans)</option></select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    Based on the <strong>SIZED</strong> decision-making framework &nbsp;·&nbsp; Stabilize · Identify · Zoom Out · <strong>Evaluate</strong> · Decide
+  </div>
+
+</div>
+
+<script>
+let criteria = [
+  {name:"Cost / financial aid", hint:"Net price, scholarships, loan burden", w:3, s:[3,3,3]},
+  {name:"Strength of program", hint:"Quality of your intended major or department", w:3, s:[3,3,3]},
+  {name:"Career outcomes", hint:"Internship rates, job placement, alumni network", w:3, s:[3,3,3]},
+  {name:"Opportunity", hint:"Research, leadership, study abroad, clubs", w:2, s:[3,3,3]},
+  {name:"Living situation", hint:"Housing quality, campus vs. city environment", w:2, s:[3,3,3]},
+  {name:"Location & distance", hint:"Proximity to home, region, cost of living nearby", w:2, s:[3,3,3]},
+  {name:"Campus culture / vibe", hint:"Social fit, community, diversity, feel", w:2, s:[3,3,3]},
+  {name:"Grad / retention rate", hint:"% graduating in 4 years — key zoom-out data point", w:3, s:[3,3,3]},
+];
+
+const wOpts = [{l:"Low (1)", v:1},{l:"Medium (2)", v:2},{l:"High (3)", v:3}];
+
+function render() {
+  const tb = document.getElementById('tbody');
+  tb.innerHTML = '';
+  criteria.forEach((c, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>
+        <div class="crit-name">${c.name}</div>
+        ${c.hint ? `<div class="crit-hint">${c.hint}</div>` : ''}
+      </td>
+      <td>
+        <select onchange="setW(${i}, this.value)">
+          ${wOpts.map(o => `<option value="${o.v}"${c.w===o.v?' selected':''}>${o.l}</option>`).join('')}
+        </select>
+      </td>
+      ${[0,1,2].map(s => `
+        <td>
+          <div class="grade-wrap">
+            <input type="range" min="1" max="5" step="1" value="${c.s[s]}"
+              oninput="setS(${i},${s},+this.value)">
+            <span class="grade-num" id="n${i}_${s}">${c.s[s]}</span>
+          </div>
+        </td>
+      `).join('')}
+      <td><button class="del-btn" onclick="delCrit(${i})" title="Remove">×</button></td>
+    `;
+    tb.appendChild(tr);
+  });
+  calcTotals();
+}
+
+function setW(i, v) { criteria[i].w = +v; calcTotals(); }
+function setS(i, s, v) {
+  criteria[i].s[s] = v;
+  document.getElementById(`n${i}_${s}`).textContent = v;
+  calcTotals();
+}
+
+function calcTotals() {
+  const totals = [0,1,2].map(s => {
+    let sum = 0, wsum = 0;
+    criteria.forEach(c => { sum += c.w * c.s[s]; wsum += c.w; });
+    return wsum ? sum / wsum : 0;
+  });
+  const mx = Math.max(...totals);
+  [0,1,2].forEach(s => {
+    const el = document.getElementById(`t${s}`);
+    el.textContent = totals[s].toFixed(2);
+    const isWinner = totals[s] === mx && totals[s] > 0;
+    el.className = 'total-val' + (isWinner ? ' winner' : '');
+    let badge = el.querySelector('.winner-badge');
+    if (isWinner) {
+      if (!badge) {
+        badge = document.createElement('span');
+        badge.className = 'winner-badge';
+        badge.textContent = 'top score';
+        el.appendChild(badge);
+      }
+    } else {
+      if (badge) badge.remove();
+    }
+  });
+}
+
+function delCrit(i) {
+  if (criteria.length <= 1) return;
+  criteria.splice(i, 1);
+  render();
+}
+
+function addCriterion() {
+  const n = document.getElementById('new-crit').value.trim();
+  if (!n) return;
+  const h = document.getElementById('new-hint').value.trim();
+  criteria.push({name: n, hint: h, w: 2, s: [3,3,3]});
+  document.getElementById('new-crit').value = '';
+  document.getElementById('new-hint').value = '';
+  render();
+}
+
+function updateNames() {
+  [0,1,2].forEach(s => {
+    const v = document.getElementById(`s${s}`).value.trim();
+    const lbl = v || `School ${String.fromCharCode(65+s)}`;
+    const h = document.getElementById(`h${s}`); if(h) h.textContent = lbl;
+    const pl = document.getElementById(`pl${s}`); if(pl) pl.textContent = `${lbl} — what could go wrong?`;
+    const dl = document.getElementById(`dl${s}`); if(dl) dl.textContent = `I · Door type — ${lbl}`;
+  });
+}
+
+render();
+</script>
+</body>
+</html>
